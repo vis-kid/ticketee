@@ -1,6 +1,11 @@
 class ProjectsController < ApplicationController
-	def index
 
+	def index
+		@projects = Project.all
+	end
+
+	def show
+    @project = Project.find(params[:id])
 	end
 
 	def new
@@ -18,8 +23,24 @@ class ProjectsController < ApplicationController
 		end
 	end
 
-	def show
+	def edit
+		@project = Project.find(params[:id])
+	end
+
+	def update
+		@project = Project.find(params[:id])
+		if @project.update(project_params)
+		  redirect_to @project, notice: 'Project has been updated.'
+		else
+			flash[:alert] = 'Project has not been updated.'
+			render action: 'edit'
+		end	
+	end
+
+	def destroy
     @project = Project.find(params[:id])
+		@project.destroy
+		redirect_to projects_path, notice: 'Project has been destroyed.'
 	end
 
 	private
